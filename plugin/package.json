@@ -1,0 +1,9 @@
+{
+  "name": "leetcode-weighted-picker",
+  "private": true,
+  "scripts": {
+    "dev": "node esbuild.config.mjs --watch",
+    "build": "node esbuild.config.mjs"
+  },
+  "devDependencies": { "esbuild": "^0.21.0" }
+}

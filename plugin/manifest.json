@@ -1,0 +1,9 @@
+{
+  "id": "leetcode-weighted-picker",
+  "name": "LeetCode Weighted Picker",
+  "version": "0.2.2",
+  "minAppVersion": "1.5.0",
+  "description": "Randomly picks LeetCode problems specified in markdown table, with higher probability for Core ⭐, with problem history and stats.",
+  "author": "mpHcl",
+  "isDesktopOnly": false
+}

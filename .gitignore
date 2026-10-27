@@ -1,0 +1,7 @@
+# Test vault 
+test_vault
+
+# Node build items
+/plugin/node_modules
+/plugin/main.js
+/plugin/data.json
