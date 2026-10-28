@@ -3,7 +3,7 @@ import esbuild from "esbuild";
 const watch = process.argv.includes("--watch");
 
 const ctx = await esbuild.context({
-  entryPoints: ["src/main.js"],
+  entryPoints: ["src/main.ts"],
   bundle: true,
   format: "cjs",
   target: "es2020",

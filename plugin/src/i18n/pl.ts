@@ -1,0 +1,57 @@
+import type { Dictionary } from "./en";
+
+const pl: Dictionary = {
+  cmdPickNext: "LeetCode: Losuj następne zadanie",
+  cmdPickThree: "LeetCode: Losuj 3 zadania",
+  cmdShowStats: "LeetCode: Pokaż statystyki",
+
+  pickedOne: "Wylosowane zadanie",
+  pickedMany: "Wylosowane zadania",
+  topicLine: "Temat: {topic}",
+  openLeetCode: "Otwórz LeetCode",
+  markDone: "Oznacz jako done",
+  doneButton: "✓ Done",
+  markedDone: "{title} oznaczone jako done.",
+  pickAgain: "Losuj ponownie",
+
+  statsTitle: "LeetCode – statystyki",
+  statsInfo: "Źródło: {source} · znaleziono {total} zadań",
+  statTotal: "Wszystkie",
+  statDone: "Ukończone",
+  statRemaining: "Pozostało",
+  statProgress: "Postęp",
+  coreHeading: "Core ⭐",
+  coreProgress: "{done} / {total} ukończonych",
+  topicsHeading: "Tematy",
+  noTopicsFound: "Nie znaleziono tematów w tabelach.",
+  colTopic: "Temat",
+  colDone: "Done",
+  colTotal: "Razem",
+  diagnostics: "Diagnostyka",
+  diagFile: "Plik",
+  diagLines: "Wiersze",
+  diagFound: "Znalezione zadania",
+  diagDone: "Done",
+  diagCore: "Core",
+  close: "Zamknij",
+  statsRenderError: "Błąd wyświetlania statystyk",
+  noTopic: "Bez tematu",
+
+  settingLanguage: "Język",
+  settingLanguageDesc: "Język interfejsu wtyczki. Nazwy komend odświeżą się po ponownym uruchomieniu Obsidiana.",
+  languageAuto: "Automatycznie (język Obsidiana)",
+  settingSource: "Plik z listą zadań",
+  settingSourceDesc: "Ścieżka do notatki zawierającej tabele LeetCode, np. Algorithms/LeetCode.md",
+  settingCore: "Waga Core ⭐",
+  settingCoreDesc: "Bazowa waga zadania oznaczonego gwiazdką.",
+  settingBoost: "Boost powtórek",
+  settingBoostDesc: "Mnożnik dla zadań, które dawno nie były losowane.",
+
+  sourceNotFound: "Nie znaleziono pliku z listą LeetCode. Ustaw ścieżkę w Settings → LeetCode Weighted Picker.",
+  noUnfinished: "Nie znaleziono niedokończonych zadań.",
+  markDoneFailed: "Nie udało się oznaczyć zadania: {error}",
+  unknownError: "nieznany błąd",
+  statsFailed: "Nie udało się obliczyć statystyk: {error}"
+};
+
+export default pl;

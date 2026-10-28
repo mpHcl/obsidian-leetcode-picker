@@ -1,0 +1,60 @@
+// The English dictionary is the source of truth for translation keys.
+// Other languages are typed as Dictionary, so a missing key is a compile error.
+const en = {
+  cmdPickNext: "LeetCode: Pick next task",
+  cmdPickThree: "LeetCode: Pick 3 tasks",
+  cmdShowStats: "LeetCode: Show stats",
+
+  pickedOne: "Picked task",
+  pickedMany: "Picked tasks",
+  topicLine: "Topic: {topic}",
+  openLeetCode: "Open LeetCode",
+  markDone: "Mark as done",
+  doneButton: "✓ Done",
+  markedDone: "{title} marked as done.",
+  pickAgain: "Pick again",
+
+  statsTitle: "LeetCode – stats",
+  statsInfo: "Source: {source} · {total} tasks found",
+  statTotal: "Total",
+  statDone: "Completed",
+  statRemaining: "Remaining",
+  statProgress: "Progress",
+  coreHeading: "Core ⭐",
+  coreProgress: "{done} / {total} completed",
+  topicsHeading: "Topics",
+  noTopicsFound: "No topics found in the tables.",
+  colTopic: "Topic",
+  colDone: "Done",
+  colTotal: "Total",
+  diagnostics: "Diagnostics",
+  diagFile: "File",
+  diagLines: "Lines",
+  diagFound: "Tasks found",
+  diagDone: "Done",
+  diagCore: "Core",
+  close: "Close",
+  statsRenderError: "Failed to display stats",
+  noTopic: "No topic",
+
+  settingLanguage: "Language",
+  settingLanguageDesc: "Plugin interface language. Command names update after Obsidian is restarted.",
+  languageAuto: "Automatic (Obsidian language)",
+  settingSource: "Task list file",
+  settingSourceDesc: "Path to the note containing your LeetCode tables, e.g. Algorithms/LeetCode.md",
+  settingCore: "Core ⭐ weight",
+  settingCoreDesc: "Base weight of a task marked with a star.",
+  settingBoost: "Review boost",
+  settingBoostDesc: "Multiplier for tasks that haven't been picked for a while.",
+
+  sourceNotFound: "LeetCode list file not found. Set the path in Settings → LeetCode Weighted Picker.",
+  noUnfinished: "No unfinished tasks found.",
+  markDoneFailed: "Could not mark the task: {error}",
+  unknownError: "unknown error",
+  statsFailed: "Stats computation failed: {error}"
+};
+
+export type TranslationKey = keyof typeof en;
+export type Dictionary = Record<TranslationKey, string>;
+
+export default en as Dictionary;
