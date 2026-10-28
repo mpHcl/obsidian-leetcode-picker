@@ -1,0 +1,95 @@
+name: leetcode-picker
+
+networks:
+  data:
+    internal: true
+  edge: {}
+
+volumes:
+  pgdata:
+
+x-hardened: &hardened
+  cap_drop: [ALL]
+  security_opt:
+    - no-new-privileges:true
+
+services:
+  postgres:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-picker}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?ustaw POSTGRES_PASSWORD w deploy/.env}
+      POSTGRES_DB: ${POSTGRES_DB:-picker}
+      CORE_DB_PASSWORD: ${CORE_DB_PASSWORD:?ustaw CORE_DB_PASSWORD w deploy/.env}
+      ML_DB_PASSWORD: ${ML_DB_PASSWORD:?ustaw ML_DB_PASSWORD w deploy/.env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks: [data]
+
+  migrate:
+    build:
+      context: ../backend
+      target: migrate
+    restart: "no"
+    environment:
+      ConnectionStrings__Core: Host=postgres;Database=${POSTGRES_DB:-picker};Username=core_app;Password=${CORE_DB_PASSWORD}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [data]
+
+  backend:
+    build:
+      context: ../backend
+      target: runtime
+    image: leetcode-picker/backend:local
+    restart: unless-stopped
+    <<: *hardened
+    read_only: true
+    tmpfs: [/tmp]
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__Core: Host=postgres;Database=${POSTGRES_DB:-picker};Username=core_app;Password=${CORE_DB_PASSWORD}
+      Ml__Url: http://ml:50051
+      Auth__ApiKey: ${BACKEND_API_KEY:?ustaw BACKEND_API_KEY w deploy/.env}
+    ports:
+      - "127.0.0.1:${BACKEND_PORT:-5001}:8080"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO /dev/null http://127.0.0.1:8080/healthz || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+      start_period: 15s
+    networks: [data, edge]
+
+  ml:
+    build:
+      context: ../ml
+      target: runtime
+    image: leetcode-picker/ml:local
+    restart: unless-stopped
+    <<: *hardened
+    read_only: true
+    tmpfs: [/tmp]
+    environment:
+      DATABASE_URL: postgresql://ml_app:${ML_DB_PASSWORD}@postgres:5432/${POSTGRES_DB:-picker}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-m", "app.healthcheck"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 15s
+    networks: [data]

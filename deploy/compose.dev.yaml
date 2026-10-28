@@ -1,0 +1,54 @@
+volumes:
+  nuget-cache:
+
+services:
+  postgres:
+    ports:
+      - "127.0.0.1:5432:5432"
+
+  migrate:
+    build:
+      target: migrate
+
+  backend:
+    build:
+      target: dev 
+    image: leetcode-picker/backend:dev
+    
+    read_only: false
+    cap_drop: !reset []
+    security_opt: !reset []
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+      DOTNET_WATCH_SUPPRESS_LAUNCH_BROWSER: "1"
+      Logging__LogLevel__Default: Debug
+    working_dir: /src
+    command: ["dotnet", "watch", "run", "--project", "src/Api", "--no-launch-profile"]
+    volumes:
+      - ../backend:/src
+      - nuget-cache:/root/.nuget/packages
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8080 && echo > /dev/null'"]
+      interval: 10s
+      timeout: 3s
+      retries: 12
+      start_period: 60s
+
+  ml:
+    build:
+      target: dev
+    image: leetcode-picker/ml:dev
+    read_only: false
+    cap_drop: !reset []
+    security_opt: !reset []
+    environment:
+      LOG_LEVEL: debug
+      PYTHONUNBUFFERED: "1"
+    working_dir: /app
+    command: ["uv", "run", "watchfiles", "python -m app.server", "src"]
+    volumes:
+      - ../ml:/app
+      - /app/.venv
+    ports:
+      - "127.0.0.1:50051:50051"

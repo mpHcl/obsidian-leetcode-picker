@@ -5,3 +5,5 @@ test_vault
 /plugin/node_modules
 /plugin/main.js
 /plugin/data.json
+
+.env
